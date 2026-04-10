@@ -34,7 +34,7 @@ climate-signal-detection/
 
 ## Scientific Background
 
-This project is framed around **detection and attribution** — one of the core research methodologies used by the Met Office and the IPCC to establish that observed climate change is driven by human activity rather than natural variability.
+This project is framed around **detection and attribution**,  one of the core research methodologies used by the Met Office and the IPCC to establish that observed climate change is driven by human activity rather than natural variability.
 
 The approach:
 1. Train an LSTM exclusively on **pre-industrial data (1821–1950)** using only natural forcing variables — NAO, solar activity, and volcanic aerosols
@@ -55,7 +55,7 @@ This mirrors real detection and attribution methodology. If natural variability 
 | Sunspot number | SILSO, Royal Observatory Belgium | 1818–2026 | Daily → Monthly |
 | Stratospheric aerosol optical depth | NASA GISS | 1850–2012 | Monthly |
 
-**HadCET** is the world's longest instrumental temperature series, maintained by the Met Office. Using it for this project was a deliberate choice — it is the flagship dataset of the organisation this project was built to impress.
+**HadCET** is the world's longest instrumental temperature series, maintained by the Met Office. Using it for this project was a deliberate choice — it is the flagship dataset of the organisation, this project was built to impress.
 
 ---
 
@@ -71,9 +71,9 @@ Total parameters: 51,521
 
 **Input features (5):** NAO index, sunspot number, aerosol optical depth, month_sin, month_cos
 
-**Sequence window:** 24 months — two full annual cycles giving the model enough context to learn inter-annual NAO variability alongside the seasonal cycle
+**Sequence window:** 24 months, two full annual cycles, giving the model enough context to learn inter-annual NAO variability alongside the seasonal cycle
 
-**Cyclical month encoding:** Month encoded as sine and cosine rather than a raw integer. This ensures the model understands that December and January are climatologically adjacent — a raw integer would treat them as maximally distant.
+**Cyclical month encoding:** Month encoded as sine and cosine rather than a raw integer. This ensures the model understands that December and January are climatologically adjacent; a raw integer would treat them as maximally distant.
 
 ---
 
@@ -98,7 +98,7 @@ Total parameters: 51,521
 
 **Detected warming trend: 0.190°C per decade**
 
-Over the 75-year test period (1951–2025) this represents approximately **1.4°C of warming** in Central England that natural forcing variables alone cannot explain.
+Over the 75-year test period (1951–2025), this represents approximately **1.4°C of warming** in Central England that natural forcing variables alone cannot explain.
 
 The IPCC AR6 estimates global mean surface warming of ~1.1°C since pre-industrial times. Central England warming slightly faster than the global average is physically expected — land warms faster than ocean. This result is consistent with the Met Office's own detection and attribution findings using the HadCET record.
 
@@ -110,9 +110,9 @@ The IPCC AR6 estimates global mean surface warming of ~1.1°C since pre-industri
 
 **1. Pandas datetime overflow on 17th century dates**
 
-`pd.to_datetime()` cannot handle dates before 1677 — it uses nanosecond precision internally which overflows for earlier dates. The HadCET monthly data goes back to 1659, causing an `OutOfBoundsDatetime` error on the first attempt.
+`pd.to_datetime()` cannot handle dates before 1677, it uses nanosecond precision internally which overflows for earlier dates. The HadCET monthly data goes back to 1659, causing an `OutOfBoundsDatetime` error on the first attempt.
 
-*Fix:* Stored dates as strings in `YYYY-MM` format throughout the pipeline (`"1659-01"`) rather than using pandas datetime objects. This sidesteps the overflow entirely and the string format still sorts and merges correctly. The daily data only goes back to 1772, so `pd.to_datetime()` was safe to use there.
+*Fix:* Stored dates as strings in `YYYY-MM` format throughout the pipeline (`"1659-01"`) rather than using pandas datetime objects. This sidesteps the overflow entirely, and the string format still sorts and merges correctly. The daily data only goes back to 1772, so `pd.to_datetime()` was safe to use there.
 
 **2. Inconsistent missing value flags across datasets**
 
@@ -130,13 +130,13 @@ The NAO and aerosol files downloaded as `.numbers` files (Apple Numbers format) 
 
 Several `NameError` crashes occurred mid-session because variables defined in earlier cells were lost when the kernel was restarted or when code was continued in a new notebook.
 
-*Fix:* Separated the project into two clean notebooks — `Data_cleansing.ipynb` for all data preparation, saving outputs to CSV at the end. `climate_lstm_model.ipynb` loads those CSVs fresh at the start. This made each notebook self-contained and eliminated all kernel state dependencies.
+*Fix:* Separated the project into two clean notebooks. `Data_cleansing.ipynb` for all data preparation, saving outputs to CSV at the end. `climate_lstm_model.ipynb` loads those CSVs fresh at the start. This made each notebook self-contained and eliminated all kernel state dependencies.
 
 **5. Third plot rendering empty**
 
-The climate signal residual plot (Plot 3) rendered as a blank white chart with axes running 0.0 to 1.0.
+The climate signal residual plot (Plot 3) rendered as a blank white chart with axes running from 0.0 to 1.0.
 
-*Fix:* The residual values were small floats and matplotlib defaulted to a 0–1 axis. Added `ax.set_ylim(residual.min() - 0.5, residual.max() + 0.5)` to force the axis to scale to the actual data range.
+*Fix:* The residual values were small floats, and matplotlib defaulted to a 0–1 axis. Added `ax.set_ylim(residual.min() - 0.5, residual.max() + 0.5)` to force the axis to scale to the actual data range.
 
 **6. PyTorch `verbose` argument removed**
 
