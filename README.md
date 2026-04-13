@@ -188,4 +188,4 @@ Python · Pandas · NumPy · PyTorch · scikit-learn · Matplotlib · time serie
 - Met Office HadOBS: https://www.metoffice.gov.uk/hadobs/hadcet
 - CRU NAO Index: https://crudata.uea.ac.uk/cru/data/nao
 - SILSO Sunspot Data: https://www.sidc.be/SILSO/datafiles
-- NASA GISS Aerosol Data: https://giss.nasa.gov/modelforce/strataer
+- NASA GISS Aerosol Data: [https://giss.nasa.gov/modelforce/strataer](https://data.giss.nasa.gov/modelforce/)
